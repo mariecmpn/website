@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index-en.html">Home</a></li>
+                <li><a href="recherches-en.html">Research</a></li>
+                <li><a href="activites-en.html">Activities</a></li>
+                <li><a href="cv-en.html">Resume</a></li>
+                <li><a href="contact-en.html">Contact</a></li>
+            </ul>
+            <button class="lang-switch" onclick="switchLanguage()">Français</button>
+        </nav>
+        <h1>Research</h1>
+    </header>
+    <main>
+        <h2>Numerical scheme derivations to simulate self-organized collective motions </h2> 
+        <p>My thesis focuses on the study and numerical simulation of self-organized collective motions. We particularly focus on the Vicsek kinetic model (on the individual scale and thus expensive) and to its associated macroscopic models (on the population density scale, thus less expensive). They describe for instance the motion of insects or birds and replicate the emergence of a self-organized collective motion, like what we can find in the wild.
+            This thesis firstly aims at understanding better the asymptotical link between the Vicsek kinetic model and its macroscopic derivatives, and to develop efficient and robust numerical schemes for the macroscopic models. The asymptotical and numerical analysis of the schemes will prove their reliability. In order to get them, techniques developed in the context of Euler equations will be extended to this new context.
+            This research project then seeks to get more realistic simulations. On one hand, we would like to enrich the macroscopic models in order to take into account fear or appetence phenomena inside the population. On the other hand, a micro-macro decomposition method will allow us to conserve kinetic aspects in the model as well as having a calculation cost close to the macroscopic models' one. This could enable us to simulate situations where certain space regions are dense (where the macroscopic model is best suited) and others not (kinetic model more relevant).</p>
+            <p>Keywords : Numerical analysis of hyperbolic systems, conservative and non-conservative hyperbolic systems, kinetic Vicsek model, finite volume methods, micro-macro numerical methods.</p>
+            <p> My PhD supervisors are <a href="https://www.math.sciences.univ-nantes.fr/~berthon/WEBfrancais/berthon.html">Christophe Berthon</a> and <a href="https://www.math.sciences.univ-nantes.fr/~crestetto/">Anaïs Crestetto</a>.</p>
+    </main>
+
+    <script>
+        function switchLanguage() {
+            window.location.href = 'recherches.html'; // Change the URL to the French version
+        }
+    </script>
+
+    <footer>
+        <p>© 2025 Marie Compain. All rights reserved.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page personnelle de Marie Compain</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="recherches.html">Recherche</a></li>
+                <li><a href="activites.html">Activités</a></li>
+                <li><a href="cv.html">CV</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <button class="lang-switch" onclick="switchLanguage()">English</button>
+        </nav>
+        <h1>Marie Compain</h1>
+        <p>Bienvenue sur ma page personnelle.</p>
+    </header>
+    <main>
+
+        <div class="columns">
+            <div class="column"> <img src="photo.png" class="center-image" alt="Photo de Marie Compain" style="width:200px; border-radius:0%;"> </div>
+            <div class="column"><section id="presentation">
+                <h2>À propos de moi</h2>
+                <p>Je suis doctorante en mathématiques appliquées au <a href="https://www.math.sciences.univ-nantes.fr/">Laboratoire de Mathématiques Jean Leray</a> (LMJL) à Nantes Université.
+                Mon sujet de thèse porte sur l'étude et la simulation numérique de mouvements collectifs auto-organisés.</p>
+                <p><a href="recherches.html">En savoir plus sur mes recherches.</a></p>
+            </section>
+            <section id="contact">
+                <h2>Contactez-moi</h2>
+                <p><a href="contact.html">Pour me contacter</a>.</p>
+            </section></div>
+        </div>
+    </main>
+
+    <script>
+        function switchLanguage() {
+            window.location.href = 'index-en.html'; // Change the URL to the English version
+        }
+    </script>
+
+    <footer>
+        <p>© 2025 Marie Compain. Tous droits réservés.</p>
+    </footer>
+</body>
+</html>
+

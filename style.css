@@ -1,0 +1,118 @@
+/* Style général */
+body {
+    font-family: Georgia, serif; /*"Lucida Console", monospace;*/
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+/* En-tête */
+header {
+    background: #e0f7fa;
+    color: rgb(2, 2, 2);
+    padding: 20px;
+    text-align: center;
+}
+
+/* Sections principales */
+main {
+    padding: 20px;
+}
+
+/* Pied de page */
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Style pour le menu de navigation */
+nav {
+    position: relative;
+    background-color: #078596; /* Couleur de fond du menu */
+    padding: 10px;
+}
+
+nav ul {
+    list-style-type: none; /* Supprime les puces */
+    margin: 0;
+    padding: 0;
+    display: flex; /* Met les éléments sur une seule ligne */
+    justify-content: center; /* Centre les éléments */
+}
+
+nav ul li {
+    margin: 0 15px; /* Espace entre les liens */
+}
+
+nav ul li a {
+    color: white; /* Couleur du texte */
+    text-decoration: none; /* Supprime le soulignement */
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    text-decoration: underline; /* Soulignement au survol */
+}
+
+button {
+    font-family: Georgia, serif;
+    background-color: #078596; /* Bleu */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #078596;
+}
+
+.center-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%; /* Ajuste la taille selon tes besoins */
+}
+
+.columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Deux colonnes égales */
+    gap: 20px; /* Espace entre les colonnes */
+}
+
+.column {
+    padding: 20px; /* Ajoute un espace intérieur */
+    border: 10px; /* solid #ccc; /* Juste pour voir les limites des colonnes */
+}
+
+.lang-switch {
+    font-family: Georgia, serif;
+    position: absolute; /* Reste en haut même quand on fait défiler */
+    top: 0px;
+    right: 10px;
+    padding: 10px 15px;
+    background-color: #e0f7fa;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000; /* S'assure que le bouton est au-dessus de tout */
+}
+
+.lang-switch:hover {
+    background-color: #078596;
+}

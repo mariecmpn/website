@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index-en.html">Home</a></li>
+                <li><a href="recherches-en.html">Research</a></li>
+                <li><a href="activites-en.html">Activities</a></li>
+                <li><a href="cv-en.html">Resume</a></li>
+                <li><a href="contact-en.html">Contact</a></li>
+            </ul>
+            <button class="lang-switch" onclick="switchLanguage()">Français</button>
+        </nav>
+        <h1>Resume</h1>
+    </header>
+    <main>
+        <p>Download my resume (French version) : <a href="cv.pdf" target="_blank">Click here</a>.</p>
+        <h2>Experience</h2> 
+        <h3>Since October 2024 - PhD student at Laboratoire de Mathématiques Jean Leray, Nantes University</h3> 
+        <p>Learn more about <a href="recherches-en.html">my PhD thesis</a>.</p>
+        <h3>April 2024 to September 2024 - Intern at CERFACS (Toulouse)</h3> 
+        <p>Appropriation of the Spectral Differences (SD) method for the numerical solving of hyperbolic systems (Euler, Navier-Stokes). Modification of this method and stability analysis of the new method. Implementation in the C++ library HOPPS, performance analysis and comparison to the standard SD method.</p>
+        <h3>June 2023 to July 2023 - Intern at Inria research center Bordeaux-Sud Ouest (Talence)</h3> 
+        <p>Implementation in the finite elements code Montjoie of the visco-thermo-acoustic partial differential equations that link speed, temperature and pressure of the air in a wind instrument, in 2D, 3D and 2D axisymmetric. </p>
+        <h2>Education</h2> 
+        <h3>2022 to 2024 - Master's degree in modelling, numerical analysis, scientific calculation (Nantes University), with high honours</h3>
+        <p>PDE analysis, numerical methods (finite elements, finite volumes, etc.) and implementation, mechanics, optimization, parallel computing.</p>
+        <p>All the projects I realized during my master's degree are available on my <a href="https://github.com/mariecmpn">github</a>.</p>
+        <h3>2019 to 2022 - Bachelor's degree in general mathematics (University of Poitiers), with high honours</h3>
+        <p>Basics of analysis, algebra, topology, geometry, probabilities, numerical analysis and inferential statistics.</p>
+        <h3>2019 - Scientific high school diploma, specialty mathematics, european section: English (Lycée Isaac de l'Etoile, Poitiers), with highest honours</h3>
+    </main>
+
+    <script>
+        function switchLanguage() {
+            window.location.href = 'cv.html'; // Change the URL to the French version
+        }
+    </script>
+    <footer>
+        <p>© 2025 Marie Compain. All rights reserved.</p>
+    </footer>
+</body>
+</html>

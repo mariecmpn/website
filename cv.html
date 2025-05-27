@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="recherches.html">Recherche</a></li>
+                <li><a href="activites.html">Activités</a></li>
+                <li><a href="cv.html">CV</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <button class="lang-switch" onclick="switchLanguage()">English</button>
+        </nav>
+        <h1>CV</h1>
+    </header>
+    <main>
+        <p>Télécharger mon CV : <a href="cv.pdf" target="_blank">Cliquer ici</a>.</p>
+        <h2>Expérience</h2> 
+        <h3>Depuis Octobre 2024 - Doctorante au Laboratoire de Mathématiques Jean Leray, Nantes Université</h3> 
+        <p>En savoir plus sur <a href="recherches.html">ma thèse</a>.</p>
+        <h3>Avril 2024 à Septembre 2024 - Stagiaire au CERFACS (Toulouse)</h3> 
+        <p>Appropriation de la méthode des différences spectrales (SD) pour la résolution numérique de systèmes hyperboliques (Euler, Navier-Stokes). Modification de cette méthode et analyse de stabilité de la nouvelle méthode obtenue. Implémentation dans la librairie C++ HOPPS, analyse de performance et comparaison avec les SD standards.</p>
+        <h3>Juin 2023 à Juillet 2023 - Stagiaire au centre Inria de l'Université de Bordeaux (Talence)</h3> 
+        <p>Implémentation dans la librairie éléments finis Montjoie des équations aux dérivées partielles thermo-visco-acoustiques qui relient vitesse, température et pression du fluide dans un instrument de musique à vent en 2D, 3D et 2D axisymétrique, en régime harmonique. </p>
+        <h2>Formation</h2> 
+        <h3>2022 à 2024 - Master Modélisation, Analyse numérique, Calcul Scientifique (Nantes Université), mention bien</h3>
+        <p>Analyse des EDP, méthodes numériques (éléments finis, volumes finis, etc.) et implémentation, mécanique, optimisation, calcul parallèle.</p>
+        <p>Tous les projets réalisés dans le cadre de mon master sont disponibles sur mon <a href="https://github.com/mariecmpn">github</a>.</p>
+        <h3>2019 à 2022 - Licence de mathématiques générales (Université de Poitiers), mention bien</h3>
+        <p>Bases d'analyse, algèbre, topologie, géométrie, probabilités, analyse numérique et statistiques inférentielles.</p>
+        <h3>2019 - Baccalauréat général série scientifique spécialité mathématiques, section européenne: anglais (Lycée Isaac de l'Etoile, Poitiers), mention très bien</h3>
+    </main>
+
+    <script>
+        function switchLanguage() {
+            window.location.href = 'cv-en.html'; // Change the URL to the English version
+        }
+    </script>
+
+    <footer>
+        <p>© 2025 Marie Compain. Tous droits réservés.</p>
+    </footer>
+</body>
+</html>
