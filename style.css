@@ -81,6 +81,22 @@ button:hover {
     background-color: #078596;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.container {
+  max-width: 1200px;
+  width: 100%;
+}
+
+.section {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
 .center-image {
     display: block;
     margin-left: auto;
@@ -115,4 +131,55 @@ button:hover {
 
 .lang-switch:hover {
     background-color: #078596;
+}
+
+.burger {
+  display: none;
+  font-size: 28px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+
+/* ========================= */
+/* RESPONSIVE – TELEPHONE */
+/* ========================= */
+
+@media (max-width: 768px) {
+
+  /* Affiche le burger */
+  .burger {
+    display: block;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+  }
+
+  /* Cache le menu */
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background-color: #078596;
+    width: 100%;
+    margin-top: 50px;
+  }
+
+  .nav-links li {
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  /* Menu ouvert */
+  .nav-links.open {
+    display: flex;
+  }
+
+  /* Bouton langue */
+  .lang-switch {
+    position: static;
+    margin: 10px auto;
+    display: block;
+  }
 }

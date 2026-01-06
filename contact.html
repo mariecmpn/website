@@ -9,13 +9,18 @@
 <body>
     <header>
         <nav>
-            <ul>
+            <button class="burger" aria-label="Menu">
+                ☰
+            </button>
+
+            <ul class="nav-links">
                 <li><a href="index.html">Accueil</a></li>
                 <li><a href="recherches.html">Recherche</a></li>
                 <li><a href="activites.html">Activités</a></li>
                 <li><a href="cv.html">CV</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
+
             <button class="lang-switch" onclick="switchLanguage()">English</button>
         </nav>
         <h1>Contact</h1>
@@ -33,10 +38,16 @@
         function switchLanguage() {
             window.location.href = 'contact-en.html'; // Change the URL to the English version
         }
+        const burger = document.querySelector('.burger');
+        const navLinks = document.querySelector('.nav-links');
+
+        burger.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+  });
     </script>
 
     <footer>
-        <p>© 2025 Marie Compain. Tous droits réservés.</p>
+        <p>© 2026 Marie Compain.</p>
     </footer>
 </body>
 </html>
