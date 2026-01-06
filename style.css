@@ -77,6 +77,10 @@ button {
     transition: background-color 0.3s;
 }
 
+button:not(.burger) {
+  display: inline-block;
+}
+
 button:hover {
     background-color: #078596;
 }
