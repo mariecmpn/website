@@ -1,42 +1,92 @@
+:root {
+    /* couleurs */
+    --color-bg: #f7f3fb;          /* fond très clair, lavande presque blanc */
+    --color-text: #3d2f4f;        /* violet foncé, doux pour les yeux, bon contraste */
+    --color-header-bg: #e6dcf5;   /* lavande pastel pour le header */
+    --color-header-text: #3d2f4f;
+    --color-accent: #8a6db3;      /* violet moyen, pour nav/boutons/liens */
+    --color-white: #ffffff;
+    /* polices */
+    --font-titles: 'Playfair Display', Georgia, serif;
+    --font-body: 'Nunito Sans', Arial, sans-serif;
+}
+
+html, body {
+    height: 100%;
+}
+
 /* Style général */
 body {
-    font-family: Georgia, serif; /*"Lucida Console", monospace;*/
+    font-family: var(--font-body);
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
-    color: #333;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+h1, h2, h3 {
+    font-family: var(--font-titles);
 }
 
 /* En-tête */
 header {
-    background: #e0f7fa;
+    background: var(--color-header-bg);
     color: rgb(2, 2, 2);
     padding: 20px;
     text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Sections principales */
 main {
     padding: 20px;
+    flex: 1;
 }
 
 /* Pied de page */
 footer {
-    background: #333;
-    color: white;
+    background: var(--color-text);
+    color: var(--color-white);
     text-align: center;
-    padding: 10px;
+    padding: 20px 10px;
     position: relative;
     bottom: 0;
     width: 100%;
 }
 
+footer a {
+    color: var(--color-white);
+    transition: opacity 0.2s;
+}
+
+footer a:hover {
+    opacity: 0.7;
+}
+
+a {
+    color: var(--color-accent);
+    text-decoration: underline;
+}
+
+a:visited {
+    color: var(--color-accent);
+}
+
+a:hover {
+    color: var(--color-header-text);
+}
+
 /* Style pour le menu de navigation */
 nav {
     position: relative;
-    background-color: #078596; /* Couleur de fond du menu */
+    background-color: var(--color-accent); /* Couleur de fond du menu */
     padding: 10px;
+    display: flex;        /* nouveau */
+    align-items: center;  /* nouveau */
 }
 
 nav ul {
@@ -44,28 +94,31 @@ nav ul {
     margin: 0;
     padding: 0;
     display: flex; /* Met les éléments sur une seule ligne */
-    justify-content: center; /* Centre les éléments */
+    justify-content: flex-start; /* Décaler à gauche les éléments */
+    flex: 1;  /* nouveau */
 }
 
 nav ul li {
     margin: 0 15px; /* Espace entre les liens */
 }
 
-nav ul li a {
-    color: white; /* Couleur du texte */
+nav ul li a,
+nav ul li a:visited {
+    color: var(--color-white); /* Couleur du texte */
     text-decoration: none; /* Supprime le soulignement */
     font-weight: bold;
 }
 
 nav ul li a:hover {
     text-decoration: underline; /* Soulignement au survol */
+    color: var(--color-white);
 }
 
 button {
     font-family: Georgia, serif;
-    background-color: #078596; /* Bleu */
+    background-color: var(--color-accent); /* Bleu */
     border: none;
-    color: white;
+    color: var(--color-white);
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
@@ -82,7 +135,7 @@ button:not(.burger) {
 }
 
 button:hover {
-    background-color: #078596;
+    background-color: var(--color-accent);
 }
 
 img {
@@ -120,21 +173,21 @@ img {
 }
 
 .lang-switch {
-    font-family: Georgia, serif;
-    position: absolute; /* Reste en haut même quand on fait défiler */
-    top: 0px;
-    right: 10px;
+    font-family: var(--font-body);
+    /*position: absolute;*/ /* Reste en haut même quand on fait défiler */
+    /*top: 0px;*/
+    /*right: 10px;*/
     padding: 10px 15px;
-    background-color: #e0f7fa;
-    color: black;
+    background-color: var(--color-white);
+    color: var(--color-header-text);
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    z-index: 1000; /* S'assure que le bouton est au-dessus de tout */
+    /*z-index: 1000;*/ /* S'assure que le bouton est au-dessus de tout */
 }
 
 .lang-switch:hover {
-    background-color: #078596;
+    background-color: var(--color-accent);
 }
 
 .burger {
@@ -142,7 +195,7 @@ img {
   font-size: 28px;
   background: none;
   border: none;
-  color: white;
+  color: var(--color-white);
   cursor: pointer;
 }
 
@@ -165,7 +218,7 @@ img {
   .nav-links {
     display: none;
     flex-direction: column;
-    background-color: #078596;
+    background-color: var(--color-accent);
     width: 100%;
     margin-top: 50px;
   }
