@@ -80,6 +80,25 @@ a:hover {
     color: var(--color-header-text);
 }
 
+/* boutons keywords */
+.keywords {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  padding: 0;
+  margin: 1em 0;
+}
+
+.keywords li {
+  background-color: var(--color-header-bg);   /* adapte à ta palette */
+  color: var(--color-text);
+  padding: 0.3em 0.8em;
+  border-radius: 999px;        /* forme "pilule" */
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
 /* Style pour le menu de navigation */
 nav {
     position: relative;
