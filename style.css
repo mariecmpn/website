@@ -91,7 +91,7 @@ a:hover {
 }
 
 .keywords li {
-  background-color: var(--color-header-bg);   /* adapte à ta palette */
+  background-color: var(--color-header-bg);   
   color: var(--color-text);
   padding: 0.3em 0.8em;
   border-radius: 999px;        /* forme "pilule" */
@@ -104,8 +104,8 @@ nav {
     position: relative;
     background-color: var(--color-accent); /* Couleur de fond du menu */
     padding: 10px;
-    display: flex;        /* nouveau */
-    align-items: center;  /* nouveau */
+    display: flex;        
+    align-items: center; 
 }
 
 nav ul {
@@ -114,7 +114,7 @@ nav ul {
     padding: 0;
     display: flex; /* Met les éléments sur une seule ligne */
     justify-content: flex-start; /* Décaler à gauche les éléments */
-    flex: 1;  /* nouveau */
+    flex: 1; 
 }
 
 nav ul li {
@@ -133,9 +133,46 @@ nav ul li a:hover {
     color: var(--color-white);
 }
 
+/* pour les abstracts */
+summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+summary:hover {
+  color: var(--color-accent);
+}
+
+details {
+  margin: 0.8em 0;
+}
+
+details p {
+  margin-top: 0.5em;
+  font-size: 0.90em;
+}
+
+/* si on veut modifier la flèche de base des abstracts (on l'enlève puis on ajoute le motif souhaité
+summary {
+  list-style: none;  
+}
+
+summary::-webkit-details-marker {
+  display: none;  
+}
+
+summary::before {
+  content: "▶ ";
+}
+
+details[open] summary::before {
+  content: "▼ ";
+} */
+
 button {
-    font-family: Georgia, serif;
-    background-color: var(--color-accent); /* Bleu */
+    font-family: var(--font-body);
+    background-color: var(--color-accent);
     border: none;
     color: var(--color-white);
     padding: 15px 32px;
@@ -177,7 +214,7 @@ img {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 50%; /* Ajuste la taille selon tes besoins */
+    width: 50%; 
 }
 
 .columns {
@@ -188,21 +225,17 @@ img {
 
 .column {
     padding: 20px; /* Ajoute un espace intérieur */
-    border: 10px; /* solid #ccc; /* Juste pour voir les limites des colonnes */
+    border: 10px; /* Juste pour voir les limites des colonnes */
 }
 
 .lang-switch {
     font-family: var(--font-body);
-    /*position: absolute;*/ /* Reste en haut même quand on fait défiler */
-    /*top: 0px;*/
-    /*right: 10px;*/
     padding: 10px 15px;
     background-color: var(--color-white);
     color: var(--color-header-text);
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    /*z-index: 1000;*/ /* S'assure que le bouton est au-dessus de tout */
 }
 
 .lang-switch:hover {

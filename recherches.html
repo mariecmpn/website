@@ -31,14 +31,21 @@
     <main>
         <h2>Développement de schémas numériques pour simuler des mouvements collectifs auto-organisés </h2> 
         <p>Ma thèse porte sur l'étude et la simulation numérique de mouvements collectifs auto-organisés. Nous nous intéressons notamment au modèle microscopique de Vicsek (à l’échelle de l’individu) et au modèle macroscopique associé (à l’échelle de la densité de population).
-            Ils permettent de décrire par exemple le mouvement d’insectes ou d’oiseaux et reproduisent l’émergence d’un mouvement collectif organisé. <br>
-            Cette thèse a pour premier but de mieux comprendre et de développer des schémas numériques performants pour le modèle macroscopique.
+            Ils permettent de décrire par exemple le mouvement d’insectes ou d’oiseaux et reproduisent l’émergence d’un mouvement collectif organisé. </p>
+        <p>Cette thèse a pour premier but de mieux comprendre et de développer un schéma numérique performant pour le modèle macroscopique, nommé modèle SOH (Self-Organized Hydrodynamics).
             La difficulté réside dans le fait que ce modèle est hyperbolique et non-conservatif.
-            Ainsi, des techniques développées dans le cadre des équations d’Euler seront étendues à ce nouveau contexte. <br>
-            Le projet de recherche vise ensuite à obtenir des simulations plus réalistes.
-            D’une part, nous souhaitons enrichir les modèles macroscopiques pour prendre en compte des phénomènes de peur ou d’appétence au sein de la population.
-            D’autre part, une méthode de décomposition micro-macro permettra de conserver les aspects cinétiques dans le modèle tout en ayant un coût de calcul proche de celui des modèles macroscopiques.
-            Cela permettra de simuler des situations où certaines régions de l’espace sont denses (modélisation macroscopique adaptée) et d’autres pas (modélisation à l’échelle de l’individu pertinente).</p>
+            En effet, les solutions ondes de choc du modèle ne sont pas bien définies.
+            De plus, les approximations numériques de ces solutions ne convergent pas vers la solution exacte.
+            Ainsi, d'une part, les chocs ont été définis comme des limites de solutions ondes progressives du modèle SOH visqueux.
+            Cela a permis de définir les chocs par des relations de Rankine-Hugoniot généralisées aux systèmes non-conservatifs.
+            Ensuite, un schéma de type Godunov a été dérivé pour le modèle SOH, auquel une correction visqueuse numérique a été ajoutée afin de capturer numériquement les ondes de choc correctement.
+            Ce travail fait l'objet d'un premier article (<a href="https://hal.science/hal-05490904">HAL</a>). </p>
+        <p>Le projet de recherche vise ensuite à obtenir des simulations plus réalistes.
+            D’une part, une méthode de décomposition micro-macro permettra de conserver les aspects cinétiques dans le modèle tout en ayant un coût de calcul moins élevé qu'une méthode particulaire.
+            En effet, le modèle SOH ne prend en compte que des individus à l'équilibre. 
+            Une décomposition micro-macro permet donc de rajouter une contribution cinétique qui ne fait partie de l'équilibre.
+            D’autre part, nous souhaitons enrichir le modèle SOH pour prendre en compte des phénomènes de peur ou d’appétence au sein de la population.
+            </p>
 
             <p> Ma thèse est encadrée par <a href="https://www.math.sciences.univ-nantes.fr/~berthon/WEBfrancais/berthon.html">Christophe Berthon</a> et <a href="https://www.math.sciences.univ-nantes.fr/~crestetto/">Anaïs Crestetto</a>.</p>
             
@@ -54,7 +61,19 @@
 
             <h2>Preprints</h2>
             <p>M. Compain, C. Berthon, A. Crestetto.
-            <em>A shock-capturing numerical scheme for a non-conservative self-organized hydrodynamics model.</em> (2026) <a href="https://hal.science/hal-05490904">HAL</a></p>
+            <em>A shock-capturing numerical scheme for a non-conservative self-organized hydrodynamics model.</em> (2026) <a href="https://hal.science/hal-05490904">HAL</a> <br>
+            <details>
+            <summary>Abstract</summary>
+            <p>This work focuses on the Self-Organized Hydrodynamics (SOH) model, which is the macroscopic limit of the well-known individual based Vicsek model.
+            The SOH model is a hyperbolic non-conservative PDE system with a geometric constraint, which causes issues for both its theoretical and numerical resolutions.
+            In this work, we first reformulate the model without its constraint for some well-prepared initial conditions.
+            We then focus on shock wave solutions of the SOH model and we define generalized Rankine-Hugoniot conditions.
+            Moreover, a Godunov-type scheme is designed and a viscous correction is added in order to numerically recover shock wave solutions.
+            Finally, some exact solutions to the Riemann problem are computed thanks to the generalized Rankine-Hugoniot conditions.
+            Thus the shock-capturing scheme is compared to an usual splitting method and the exact solutions on some test cases. 
+            These simulations confirm the relevance of the viscous Godunov-type scheme to simulate shock waves of the SOH model.</p>
+            </details>
+        </p>
     </main>
 
     <script>
