@@ -170,6 +170,50 @@ details[open] summary::before {
   content: "▼ ";
 } */
 
+  form{
+    background: var(--color-accent);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 32px;
+  }
+  .field-grid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 24px;
+  }
+  .field{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .field label{
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+  .field label sub{
+    font-size: 0.7em;
+  }
+  .field input{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.95rem;
+    padding: 9px 10px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: var(--color-white);
+    color: var(--color-header-bg);
+  }
+  .field input:focus{
+    outline: none;
+    border-color: var(--color-header-text);
+    box-shadow: 0 0 0 3px var(--color-header-bg);
+  }
+  .actions{
+    margin-top: 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
 button {
     font-family: var(--font-body);
     background-color: var(--color-accent);
@@ -193,6 +237,50 @@ button:not(.burger) {
 button:hover {
     background-color: var(--color-accent);
 }
+
+  form{
+    background: var(--color-header-bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 32px;
+  }
+  .field-grid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 24px;
+  }
+  .field{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .field label{
+    font-size: 0.9rem;
+    color: var(--color-text);
+  }
+  .field label sub{
+    font-size: 0.7em;
+  }
+  .field input{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.95rem;
+    padding: 9px 10px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: var(--color-bg);
+    color: var(--ink);
+  }
+  .field input:focus{
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .actions{
+    margin-top: 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
 
 img {
   max-width: 100%;
@@ -291,4 +379,6 @@ img {
     margin: 10px auto;
     display: block;
   }
+
+  .field-grid{ grid-template-columns: 1fr; }
 }

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riemann solver</title>
+    <link rel="icon" href="favicon_io/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="favicon_io/favicon-32x32.png">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script>
+    MathJax = {
+    tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <button class="burger" aria-label="Menu">
+                ☰
+            </button>
+
+            <ul class="nav-links">
+                <li><a href="index-en.html">Back to Home page</a></li>
+            </ul>
+
+        </nav>
+        <h1>Riemann solver for the SOH model</h1>
+    </header>
+<body>
+  <main>
+<div class="wrap">
+    <p>Get solutions of the Riemann problem associated to the Self-Organized Hydrodynamics (SOH) model, given by
+         $$ \partial_t \rho + \partial_x(\rho\cos\theta) = 0,$$
+        $$\partial_t \theta + c\partial_x(\sin \theta) - \lambda \frac{\sin\theta}{\rho} \partial_x \rho = 0, $$
+        where $\rho$ is the density of individuals, $\theta$ the angle of their mean velocity, and $c$ and $\lambda$ are two constants depending on a noise coefficient $d$ (see <a href="https://arxiv.org/abs/0910.2951">[Motsch and Navoret]</a> for the computation of $c$ and $\lambda$).
+    </p>
+    <p>Fill in the noise coefficient and the left and right states, then compute the solution.</p>
+
+  <form id="solver-form">
+    <div class="field-grid">
+      <div class="field">
+        <label for="d">$d$ — noise coefficient</label>
+        <input type="number" step="any" id="d" value="0.2" required>
+      </div>
+      <div class="field"><!-- espace vide pour aligner la grille --></div>
+
+      <div class="field">
+        <label for="rl">$\rho_L$ — density, left state</label>
+        <input type="number" step="any" id="rl" value="1.0" required>
+      </div>
+      <div class="field">
+        <label for="rr">$\rho_R$ — density, right state</label>
+        <input type="number" step="any" id="rr" value="2.0" required>
+      </div>
+
+      <div class="field">
+        <label for="tl">$\theta_L$ — velocity angle, left state</label>
+        <input type="number" step="any" id="tl" value="0.5" required>
+      </div>
+      <div class="field">
+        <label for="tr">$\theta_R$ — velocity angle, right state</label>
+        <input type="number" step="any" id="tr" value="1.0" required>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="submit" id="solve-btn" disabled>Python loading…</button>
+      <span class="status" id="status-text">Initialisation in progress, a few more seconds…</span>
+    </div>
+  </form>
+  <p><em>Calculations done locally in the navigator via Pyodide. The first loading can take 20 to 45&nbsp;seconds depending on the connexion.</em> </p>
+  <div class="result-panel" id="result-panel">
+    <h2>Result</h2>
+    <pre id="result-text"></pre>
+    <img id="result-img" alt="Plot of the solution at time t=1" style="display:none;">
+  </div>
+  </main>
+      <footer>
+        <p>
+            <a href="mailto:marie.compain@univ-nantes.fr">Email</a>
+            &middot;
+            <a href="https://www.math.sciences.univ-nantes.fr/" target="_blank" rel="noopener noreferrer">LMJL</a>
+            &middot;
+            © 2026 Marie Compain
+        </p>
+    </footer>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/pyodide/v314.0.6/full/pyodide.js"></script>
+<script>
+const PY_SOLVER = `
+import io
+import base64
+import warnings
+import numpy as np
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+from scipy.special import iv
+
+def solve_and_plot(d, rl, tl, rr, tr):
+    lines = []
+    ####################################################
+    # Calculation of the constants
+    ####################################################
+    def M(theta):
+        return np.exp(np.cos(theta) / d) / (2. * np.pi * iv(0, 1. / d))
+
+    def DeuxPts(g, theta, a, b, N):
+        h = (b - a) / N
+        ai = np.linspace(a, b, N + 1)
+        somme = 0.
+        for i in range(0, N):
+            somme = somme + h * (theta * g(ai[i + 1]) + (1. - theta) * g(ai[i]))
+        return somme
+
+    def integrate_psi(theta):
+        return np.exp(-np.cos(theta) / d)
+
+    def psi(theta):
+        N = 100
+        return d * theta - DeuxPts(integrate_psi, 0.5, 0., theta, N) / DeuxPts(integrate_psi, 0.5, 0., np.pi, N)
+
+    def integrate_c1(theta):
+        return np.cos(theta) * M(theta)
+
+    def integrate_c2_num(theta):
+        return np.cos(theta) * np.sin(theta) * psi(theta) * M(theta)
+
+    def integrate_c2_den(theta):
+        return np.sin(theta) * psi(theta) * M(theta)
+
+    N = 1000
+    c1 = DeuxPts(integrate_c1, 0.5, -np.pi, np.pi, N)
+    c2 = DeuxPts(integrate_c2_num, 0.5, -np.pi, np.pi, N) / DeuxPts(integrate_c2_den, 0.5, -np.pi, np.pi, N)
+    c = c2 / c1
+    l = d / c1
+
+    ####################################################
+    # Computation of the solution of the Riemann problem
+    ####################################################
+    tt = ((((c - 1) ** 2 - 4 * l) / (c + 1)) ** 2 - (c - 1) ** 2) / (4 * l)
+    tstar1 = np.pi + np.arctan(-np.sqrt(tt))
+    tstar2 = np.arctan(np.sqrt(tt))
+
+    def atanh(x):
+        return 0.5 * np.log(np.abs((1 + x) / (1 - x)))
+
+    def J(x, sigma):
+        t = np.tan(x / 2.0)
+        if abs(sigma) < 1:
+            coef = 2.0 / np.sqrt(1 - sigma ** 2)
+            arg = np.sqrt((1 + sigma) / (1 - sigma)) * t
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                return coef * atanh(arg)
+        elif sigma > 1:
+            coef = -2.0 / np.sqrt(sigma ** 2 - 1)
+            arg = np.sqrt((sigma + 1) / (sigma - 1)) * t
+            return coef * np.arctan(arg)
+        elif sigma < -1:
+            coef = 2.0 / np.sqrt(sigma ** 2 - 1)
+            arg = np.sqrt((-sigma - 1) / (1 - sigma)) * t
+            return coef * np.arctan(arg)
+        else:
+            raise ValueError("sigma cannot be exactly 1 or -1.")
+
+    def G(x, sigma):
+        cos_x = np.cos(x)
+        sin_x = np.sin(x)
+        den = cos_x - sigma
+        termino1 = -(l * sin_x) / (2 * den ** 2)
+        termino2 = (sigma * (2 * c + l - 2) * sin_x) / (2 * (1 - sigma ** 2) * den)
+        termino3 = ((2 * c + l - 2 * sigma ** 2) / (2 * (1 - sigma ** 2))) * J(x, sigma)
+        return termino1 + termino2 + termino3
+
+    def av1(x):
+        gamma = np.sqrt((c - 1) ** 2 / 4 * np.cos(x) ** 2 + l * np.sin(x) ** 2)
+        return .5 * (c + 1) * np.cos(x) - gamma
+
+    def av2(x):
+        gamma = np.sqrt((c - 1) ** 2 / 4 * np.cos(x) ** 2 + l * np.sin(x) ** 2)
+        return .5 * (c + 1) * np.cos(x) + gamma
+
+    def dicot(f, a, b):
+        if f(a) * f(b) > 0:
+            return None
+        a0, fa0, b0, fb0 = a, f(a), b, f(b)
+        length = b0 - a0
+        while length > 1.e-12:
+            c0 = 0.5 * (a0 + b0)
+            fc0 = f(c0)
+            if fa0 * fc0 < 0:
+                b0, fb0 = c0, fc0
+            elif fc0 * fb0 < 0:
+                a0, fa0 = c0, fc0
+            elif fc0 == 0:
+                return c0
+            else:
+                return None
+            length = b0 - a0
+        return 0.5 * (a0 + b0)
+
+    def hugoniot(theta, tl_, rhol):
+        slim = min(np.cos(tl_), np.cos(theta))
+        def Fh(s):
+            return G(theta, s) - G(tl_, s)
+        epsilon = 1.e-4
+        sigma = dicot(Fh, av1(tstar1) + epsilon, slim - epsilon)
+        return rhol * (np.cos(tl_) - sigma) / (np.cos(theta) - sigma), sigma
+
+    def hugoniot2b(theta, tr_, rhor):
+        slim = max(np.cos(theta), np.cos(tr_))
+        def Fh(s):
+            return G(tr_, s) - G(theta, s)
+        epsilon = 1.e-4
+        sigma = dicot(Fh, slim + epsilon, av2(tstar2) - epsilon)
+        return rhor * (np.cos(tr_) - sigma) / (np.cos(theta) - sigma), sigma
+
+    def primitiva1(x):
+        a = .5 * abs(1 - c)
+        return -a / l * np.log(np.abs(np.sqrt(a ** 2 * np.cos(x) ** 2 + l * np.sin(x) ** 2) + a * np.cos(x))) \\
+            - np.sqrt(l - a ** 2) / l * np.arcsin(np.cos(x) * np.sqrt((l - a ** 2) / l))
+
+    def rar1(theta):
+        return rl * np.exp(primitiva1(theta) - primitiva1(tl))
+
+    def primitiva2(x):
+        a = .5 * abs(1 - c)
+        return -a / l * np.log(np.abs(np.sqrt(a ** 2 * np.cos(x) ** 2 + l * np.sin(x) ** 2) - a * np.cos(x))) \\
+            + np.sqrt(l - a ** 2) / l * np.arcsin(np.cos(x) * np.sqrt((l - a ** 2) / l))
+
+    def rar2b(theta):
+        return rr * np.exp(primitiva2(theta) - primitiva2(tr))
+
+    def invav1(x):
+        return np.arccos((x * (c + 1) + np.sqrt(x ** 2 * (c - 1) ** 2 + 4 * l * (c + l - x ** 2))) / (2 * (c + l)))
+
+    def invav2(x):
+        return np.arccos((x * (c + 1) - np.sqrt(x ** 2 * (c - 1) ** 2 + 4 * l * (c + l - x ** 2))) / (2 * (c + l)))
+
+    ####################################################
+    # Displays and plots
+    ####################################################
+
+
+    if (tr < tstar2) or (tl > tstar1):
+        return "Outside the GNL region.", None
+
+    def thetamax(t):
+        return G(t, av1(t)) - G(tl, av1(t))
+
+    tmax1 = dicot(thetamax, tl + 1.e-4, np.pi - 1.e-4)
+    if tmax1 is None:
+        return "Numerical error while computing tmax1.", None
+
+    def curva1l(theta):
+        if theta <= tl:
+            return rar1(theta)
+        else:
+            rho, sigma = hugoniot(theta, tl, rl)
+            return rho
+
+    def curva2r(theta):
+        if theta < tr:
+            rho, sigma = hugoniot2b(theta, tr, rr)
+            return rho
+        else:
+            return rar2b(theta)
+
+    if (curva1l(tmax1) < curva2r(tmax1)) or (curva2r(tstar2) < curva1l(tstar2)):
+        return "It seems that there is no standard solution.", None
+
+    def f(theta):
+        return curva1l(theta) - curva2r(theta)
+
+    tm = None
+    rm = None
+    if (f(tl) == 0) or (f(tr) == 0):
+        lines.append('Only a single wave!')
+    else:
+        tm = dicot(f, tstar2, tstar1)
+        if tm is None:
+            return "Numerical error while computing the intermiediate state.", None
+        rm = curva1l(tm)
+        lines.append(f'Intermediate state : rho = {rm:.8g}, theta = {tm:.8g}')
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8.5, 3.8))
+
+    if (curva1l(tr) == rr) and (tl < tr):
+        rrr, sigma1 = hugoniot(tr, tl, rl)
+        lines.append(f'1-shock of speed {sigma1:.8g}')
+        x = np.linspace(min(0, sigma1) - .5, max(0, sigma1) + .5)
+        ax1.plot(x, rl * (x < sigma1) + rr * (x > sigma1))
+        ax2.plot(x, tl * (x < sigma1) + tr * (x > sigma1))
+
+    elif (curva1l(tr) == rr) and (tl > tr):
+        lines.append(f'1-rarefaction of speeds {av1(tl):.8g} and {av1(tr):.8g}')
+        x1 = np.linspace(min(0, av1(tl)) - .5, av1(tl))
+        x2 = np.linspace(av1(tl), av1(tr))
+        x3 = np.linspace(av1(tr), max(0, av1(tr)) + .5)
+        ax1.plot(x1, rl * np.ones_like(x1), 'b', x2, rar1(invav1(x2)), 'b', x3, rr * np.ones_like(x3), 'b')
+        ax2.plot(x1, tl * np.ones_like(x1), 'b', x2, invav1(x2), 'b', x3, tr * np.ones_like(x3), 'b')
+
+    elif (curva2r(tl) == rl) and (tl < tr):
+        rrr, sigma2 = hugoniot2b(tl, tr, rr)
+        lines.append(f'2-shock of speed {sigma2:.8g}')
+        x = np.linspace(min(0, sigma2) - .5, max(0, sigma2) + .5)
+        ax1.plot(x, rl * (x < sigma2) + rr * (x > sigma2))
+        ax2.plot(x, tl * (x < sigma2) + tr * (x > sigma2))
+
+    elif (curva2r(tl) == rl) and (tl > tr):
+        lines.append(f'2-rarefaction of speeds {av2(tl):.8g} and {av2(tr):.8g}')
+        x1 = np.linspace(min(0, av2(tl)) - .5, av2(tl))
+        x2 = np.linspace(av2(tl), av2(tr))
+        x3 = np.linspace(av2(tr), max(0, av2(tr)) + .5)
+        ax1.plot(x1, rl * np.ones_like(x1), 'b', x2, rar2b(invav2(x2)), 'b', x3, rr * np.ones_like(x3), 'b')
+        ax2.plot(x1, tl * np.ones_like(x1), 'b', x2, invav2(x2), 'b', x3, tr * np.ones_like(x3), 'b')
+
+    elif (tl < tm) and (tm < tr):
+        rrr, sigma1 = hugoniot(tm, tl, rl)
+        rrr, sigma2 = hugoniot2b(tm, tr, rr)
+        lines.append(f'1-shock of speed {sigma1:.8g}, 2-shock of speed {sigma2:.8g}')
+        x = np.linspace(min(sigma1, 0) - .5, max(sigma2, 0) + .5, 150)
+        ax1.plot(x, rl * (x < sigma1) + rm * (sigma1 < x) * (x < sigma2) + rr * (x > sigma2))
+        ax2.plot(x, tl * (x < sigma1) + tm * (sigma1 < x) * (x < sigma2) + tr * (x > sigma2))
+
+    elif (tl < tm) and (tm > tr):
+        rrr, sigma1 = hugoniot(tm, tl, rl)
+        lines.append(f'1-shock of speed {sigma1:.8g}, 2-rarefaction of speeds {av2(tm):.8g} and {av2(tr):.8g}')
+        x1 = np.linspace(min(0, sigma1) - .5, av2(tm), 150)
+        x2 = np.linspace(av2(tm), av2(tr), 150)
+        x3 = np.linspace(av2(tr), max(av2(tr), 0) + .5, 150)
+        ax1.plot(x1, rl * (x1 < sigma1) + rm * (x1 > sigma1), 'b', x2, rar2b(invav2(x2)), 'b', x3, rr * np.ones_like(x3), 'b')
+        ax2.plot(x1, tl * (x1 < sigma1) + tm * (x1 > sigma1), 'b', x2, invav2(x2), 'b', x3, tr * np.ones_like(x3), 'b')
+
+    elif (tl > tm) and (tm < tr):
+        rrr, sigma2 = hugoniot2b(tm, tr, rr)
+        lines.append(f'1-rarefaction of speeds {av1(tl):.8g} a {av1(tm):.8g},  2-shock of speed {sigma2:.8g}')
+        x1 = np.linspace(min(0, av1(tl)) - .5, av1(tl), 150)
+        x2 = np.linspace(av1(tl), av1(tm), 150)
+        x3 = np.linspace(av1(tm), max(sigma2, 0) + .5, 150)
+        ax1.plot(x1, rl * np.ones_like(x1), 'b', x2, rar1(invav1(x2)), 'b', x3, rm * (x3 < sigma2) + rr * (x3 > sigma2), 'b')
+        ax2.plot(x1, tl * np.ones_like(x1), 'b', x2, invav1(x2), 'b', x3, tm * (x3 < sigma2) + tr * (x3 > sigma2), 'b')
+
+    elif (tl > tm) and (tm > tr):
+        lines.append(f'1-rarefaction of speeds {av1(tl):.8g} and {av1(tm):.8g},'
+                      f' 2-rarefaction of speeds {av2(tm):.8g} and {av2(tr):.8g}')
+        x1 = np.linspace(min(0, av1(tl)) - .5, av1(tl), 150)
+        x2 = np.linspace(av1(tl), av1(tm), 150)
+        x3 = np.linspace(av1(tm), av2(tm), 150)
+        x4 = np.linspace(av2(tm), av2(tr), 150)
+        x5 = np.linspace(av2(tr), max(av2(tr), 0) + 0.5)
+        ax1.plot(x1, rl * np.ones_like(x1), 'b', x2, rar1(invav1(x2)), 'b', x3, rm * np.ones_like(x3), 'b',
+                 x4, rar2b(invav2(x4)), 'b', x5, rr * np.ones_like(x5), 'b')
+        ax2.plot(x1, tl * np.ones_like(x1), 'b', x2, invav1(x2), 'b', x3, tm * np.ones_like(x3), 'b',
+                 x4, invav2(x4), 'b', x5, tr * np.ones_like(x5), 'b')
+
+    ax1.set_xlabel('x'); ax1.set_ylabel('rho'); ax1.set_title('rho at t = 1')
+    ax2.set_xlabel('x'); ax2.set_ylabel('theta'); ax2.set_title('theta at t = 1')
+    fig.tight_layout()
+
+    buf = io.BytesIO()
+    fig.savefig(buf, format='png', dpi=130)
+    plt.close(fig)
+    buf.seek(0)
+    png_b64 = base64.b64encode(buf.read()).decode('ascii')
+
+    return "\\n".join(lines), png_b64
+`;
+
+const btn = document.getElementById('solve-btn');
+const statusText = document.getElementById('status-text');
+const form = document.getElementById('solver-form');
+const resultPanel = document.getElementById('result-panel');
+const resultText = document.getElementById('result-text');
+const resultImg = document.getElementById('result-img');
+
+let pyodideReady = null;
+
+async function initPyodide(){
+  statusText.textContent = 'Pyodide loading…';
+  const pyodide = await loadPyodide();
+  statusText.textContent = 'NumPy, SciPy and Matplotlib loading (can take up to 20-45s)…';
+  await pyodide.loadPackage(['numpy', 'scipy', 'matplotlib']);
+  pyodide.runPython(PY_SOLVER);
+  statusText.textContent = 'Ready.';
+  btn.disabled = false;
+  btn.textContent = 'Compute';
+  return pyodide;
+}
+
+pyodideReady = initPyodide().catch(err => {
+  statusText.textContent = "Error while loading the Python environment. Check your Internet connexion and load the page again.";
+  console.error(err);
+});
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  btn.disabled = true;
+  btn.textContent = 'Calculation in progress…';
+
+  try{
+    const pyodide = await pyodideReady;
+    const d = parseFloat(document.getElementById('d').value);
+    const rl = parseFloat(document.getElementById('rl').value);
+    const tl = parseFloat(document.getElementById('tl').value);
+    const rr = parseFloat(document.getElementById('rr').value);
+    const tr = parseFloat(document.getElementById('tr').value);
+
+    pyodide.globals.set('d_in', d);
+    pyodide.globals.set('rl_in', rl);
+    pyodide.globals.set('tl_in', tl);
+    pyodide.globals.set('rr_in', rr);
+    pyodide.globals.set('tr_in', tr);
+
+    const resultProxy = pyodide.runPython('solve_and_plot(d_in, rl_in, tl_in, rr_in, tr_in)');
+    const [text, pngB64] = resultProxy.toJs();
+    resultProxy.destroy();
+
+    resultPanel.classList.remove('error');
+    resultPanel.classList.add('visible');
+    resultText.textContent = text;
+
+    if (pngB64){
+      resultImg.src = 'data:image/png;base64,' + pngB64;
+      resultImg.style.display = 'block';
+    } else {
+      resultImg.style.display = 'none';
+      resultImg.removeAttribute('src');
+    }
+  } catch(err){
+    resultPanel.classList.add('visible', 'error');
+    resultText.textContent = "Erreur lors du calcul : " + err.message;
+    resultImg.style.display = 'none';
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Calculer';
+  }
+}); // fin script code Python
+        const burger = document.querySelector('.burger');
+        const navLinks = document.querySelector('.nav-links');
+
+        burger.addEventListener('click', () => {
+            navLinks.classList.toggle('open');   });
+</script>
+</body>
+</html>
